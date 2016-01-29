@@ -29,8 +29,10 @@
         <input type="button" onclick="randomNum()" value="Press Me">
         <script>
             var displayHeight, displayWidth;
-            displayHeight = screen.height;
-            displayWidth  = screen.width;
+            displayHeight = document.documentElement.clientHeight;
+            displayWidth  = document.documentElement.clientWidth;
+            alert(displayHeight);
+            alert(displayWidth);
             var elem = document.getElementById("randomNumber");
             
             function randomInt(i1,i2){
@@ -54,8 +56,11 @@
                 elem.innerHTML = randomInt();
             }
             function randomPosition(){
-                elem.style.top = randomInt(0,displayHeight - 40) + 'px';
-                elem.style.left = randomInt(0,displayWidth - 40) + 'px';
+                var myHeight, myWidth;
+                myHeight = displayHeight - 40;
+                myWidth = displayWidth - 40;
+                elem.style.top = randomInt(0,myHeight) + 'px';
+                elem.style.left = randomInt(0,myWidth) + 'px';
                 randomNum();
             }
         </script>
