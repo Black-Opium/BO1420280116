@@ -1,6 +1,64 @@
 <html>
     <head>
+        <meta charset="utf-8">
+        <style>
+            html,body{
+                width:  100%;
+                height: 100%;
+                padding: 0px;
+                margin: 0px;
+                overflow: hidden;
+                max-height: 100%;
+                max-width: 100%;
+                min-height: 100%;
+                min-width: 100%;
+            }
+        #randomNumber{
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            padding: 0px;
+            margin: 0px;
+        }
+        </style>
     </head>
     <body>
+        <h1 onmouseover="randomPosition()" id="randomNumber" onHover="randomNum()"></h1>
+        <input type="button" onclick="randomNum()" value="Press Me">
+        <script>
+            var displayHeight, displayWidth;
+            displayHeight = screen.height;
+            displayWidth  = screen.width;
+            var elem = document.getElementById("randomNumber");
+            
+            function randomInt(i1,i2){
+                min = 0;
+                max = 99;
+                
+                if(i1){
+                    min = i1;
+                }
+                if(i2){
+                    max = i2;
+                }
+                var min, max;
+
+                var i;
+                i = Math.floor(Math.random() * (max - min)) + min;
+                return i;
+            }
+            
+            function randomNum(){
+                elem.innerHTML = randomInt();
+            }
+            function randomPosition(){
+                elem.style.top = randomInt(0,displayHeight - 40) + 'px';
+                elem.style.left = randomInt(0,displayWidth - 40) + 'px';
+                randomNum();
+            }
+        </script>
     </body>
+
 </html>
