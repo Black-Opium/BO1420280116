@@ -2,6 +2,8 @@
     <head>
         <title>Index Page</title>
         <meta charset="utf-8">
+        <meta http-equiv-"X-UA-Compatible" content="IE=9"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
         <style>
             html,body{
                 width:  100%;
@@ -15,6 +17,7 @@
                 min-width: 100%;
             }
         #randomNumber{
+            display: none;
             position: absolute;
             width: 40px;
             height: 40px;
@@ -23,47 +26,90 @@
             padding: 0px;
             margin: 0px;
         }
+            #startButton{
+                display: block;
+                margin: auto;
+                color: #fff;
+                font-size: 14px;
+                background: blue;
+                padding: 3px;
+                border-radius: 3px;
+                border: 1px solid #000;
+            }
+            #bigIMG{
+                display: none;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                opacity: 0;
+            }
         </style>
     </head>
     <body>
-        <h1 onmouseover="randomPosition()" id="randomNumber" onHover="randomNum()"></h1>
-        <input type="button" onclick="randomNum()" value="Press Me">
+        <img src="1.jpg" id="bigIMG">
+        <h1 onmouseover="randomPosition()" onclick="randomPosition()" onmouseout="randomPosition()" id="randomNumber"></h1>
+        <input id="startButton" type="button" onclick="buttonEvent()" value="START">
+        <audio id="mysticalPlayer" src="ad.mp4"></audio>
         <script>
-            var displayHeight, displayWidth;
-            displayHeight = document.documentElement.clientHeight;
-            displayWidth  = document.documentElement.clientWidth;
-            alert(displayHeight);
-            alert(displayWidth);
-            var elem = document.getElementById("randomNumber");
-            
-            function randomInt(i1,i2){
-                min = 0;
-                max = 99;
-                
-                if(i1){
-                    min = i1;
-                }
-                if(i2){
-                    max = i2;
-                }
-                var min, max;
+                var displayHeight, displayWidth, startButton, elem, player, screemID, screemInt, bigIMG;
 
-                var i;
-                i = Math.floor(Math.random() * (max - min)) + min;
-                return i;
-            }
-            
-            function randomNum(){
-                elem.innerHTML = randomInt();
-            }
-            function randomPosition(){
-                var myHeight, myWidth;
-                myHeight = displayHeight - 40;
-                myWidth = displayWidth - 40;
-                elem.style.top = randomInt(0,myHeight) + 'px';
-                elem.style.left = randomInt(0,myWidth) + 'px';
-                randomNum();
-            }
+                displayHeight = document.documentElement.clientHeight;
+                displayWidth  = document.documentElement.clientWidth;
+
+                alert(displayHeight);
+                alert(displayWidth);
+
+                elem        = document.getElementById('randomNumber');
+                startButton = document.getElementById('startButton');
+                player      = document.getElementById('mysticalPlayer');
+                bigIMG      = $('#bigIMG');
+
+                function screem(){
+                    clearInterval(screemID);
+                    bigIMG.animate(function(){bigIMG.fadeTo('fast',1)});
+                    if(player.play()){
+                        player.pause();
+                    }
+                    player.currentTime = 0;
+                    player.play();
+                    screemID = setTimeout(function (){ player.pause();  },1800);
+                }
+                startButton.style.marginTop = (displayHeight / 2 ) - startButton.height;
+                function randomInt(i1,i2){
+                    min = 0;
+                    max = 99;
+
+                    if(i1){
+                        min = i1;
+                    }
+                    if(i2){
+                        max = i2;
+                    }
+                    var min, max;
+
+                    var i;
+                    i = Math.floor(Math.random() * (max - min)) + min;
+                    return i;
+                }
+
+                function randomNum(){
+                    elem.innerHTML = randomInt();
+                }
+                function randomPosition(){
+                    var myHeight, myWidth;
+                    myHeight = displayHeight - 40;
+                    myWidth = displayWidth - 40;
+                    elem.style.top = randomInt(0,myHeight) + 'px';
+                    elem.style.left = randomInt(0,myWidth) + 'px';
+                    randomNum();
+                    screem();
+                }
+
+                function buttonEvent(){
+                    startButton.style.display = "none";
+                    elem.style.display = 'inline';
+                    randomPosition();
+                }
         </script>
     </body>
 
