@@ -5,11 +5,13 @@
         <meta http-equiv-"X-UA-Compatible" content="IE=9"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
         <style>
+            *{
+                padding: 0px;
+                margin: 0px;
+            }
             html,body{
                 width:  100%;
                 height: 100%;
-                padding: 0px;
-                margin: 0px;
                 overflow: hidden;
                 max-height: 100%;
                 max-width: 100%;
@@ -47,34 +49,28 @@
     </head>
     <body>
         <img src="1.jpg" id="bigIMG">
-        <h1 onmouseover="randomPosition()" onclick="randomPosition()" onmouseout="randomPosition()" id="randomNumber"></h1>
+        <h6>You point = <a class="myPoints"></a></h6>
+        <h1 onmouseover="fearFunction()" onclick="fearFunction()" onmouseout="fearFunction()" id="randomNumber"></h1>
         <input id="startButton" type="button" onclick="buttonEvent()" value="START">
-        <audio id="mysticalPlayer" src="ad.mp4"></audio>
+        <audio id="mysticalPlayer" src="ad.mp3"></audio>
         <script>
-                var displayHeight, displayWidth, startButton, elem, player, screemID, screemInt, bigIMG;
+                var displayHeight, displayWidth, startButton, elem, randomIntVar, player, screemID, screemImg, bigIMG, iPlusPlus, myPoints;
 
                 displayHeight = document.documentElement.clientHeight;
                 displayWidth  = document.documentElement.clientWidth;
-
-                alert(displayHeight);
-                alert(displayWidth);
 
                 elem        = document.getElementById('randomNumber');
                 startButton = document.getElementById('startButton');
                 player      = document.getElementById('mysticalPlayer');
                 bigIMG      = $('#bigIMG');
+                myPoints    = $('.myPoints');
+            
+                iPlusPlus = 0;
+                myPoints.html = 0;
 
-                function screem(){
-                    clearInterval(screemID);
-                    bigIMG.animate(function(){bigIMG.fadeTo('fast',1)});
-                    if(player.play()){
-                        player.pause();
-                    }
-                    player.currentTime = 0;
-                    player.play();
-                    screemID = setTimeout(function (){ player.pause();  },1800);
-                }
+            
                 startButton.style.marginTop = (displayHeight / 2 ) - startButton.height;
+            
                 function randomInt(i1,i2){
                     min = 0;
                     max = 99;
@@ -93,22 +89,58 @@
                 }
 
                 function randomNum(){
-                    elem.innerHTML = randomInt();
+                    if(iPlusPlus <= 5){
+                        randomIntVar = randomInt();
+                        while(randomIntVar <= 10){
+                            randomIntVar = randomInt();
+                        }
+                    }else{
+                        randomIntVar = randomInt();
+                    }
+                    elem.innerHTML = randomIntVar;
+                    iPlusPlus += 1;
+                    myPoints.text(iPlusPlus);
+                    return randomIntVar;
                 }
+            
                 function randomPosition(){
                     var myHeight, myWidth;
                     myHeight = displayHeight - 40;
                     myWidth = displayWidth - 40;
                     elem.style.top = randomInt(0,myHeight) + 'px';
                     elem.style.left = randomInt(0,myWidth) + 'px';
-                    randomNum();
-                    screem();
                 }
-
+            
+                function screem(){
+                    randomPosition();
+                    clearTimeout(screemID);
+                    clearTimeout(screemImg);
+                    elem.style.display = 'none';
+                    bigIMG.fadeTo(450,1);
+                    
+                    if(player.play()){
+                        player.pause();
+                    }
+                    
+                    player.currentTime = 0;
+                    player.play();
+                    
+                    screemImg = setTimeout(function(){ bigIMG.fadeTo(400,0);  elem.style.display = 'inline';},800);
+                    screemID = setTimeout(function (){ player.pause();},2300);
+                }
+            
+                function fearFunction(){
+                    randomPosition();
+                    randomNum();
+                    if(randomIntVar < 6){
+                        screem();
+                    }
+                }
+            
                 function buttonEvent(){
                     startButton.style.display = "none";
                     elem.style.display = 'inline';
-                    randomPosition();
+                    fearFunction();
                 }
         </script>
     </body>
